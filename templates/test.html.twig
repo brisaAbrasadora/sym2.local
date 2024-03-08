@@ -6,6 +6,62 @@
         <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
     </head>
     <body>
+        {# Comment
+        multiline #}
+
+    {# Checks if name is declared in controller and passed down #}
+    {% if name is defined %} 
+        <h1>Hello {{ name }}!</h1>
+    {% else %}
         <h1>Hello World!</h1>
+    {% endif %}
+        <p>{{ greeting }}.</p>
+    
+        <h3>Date filter</h3>
+        <p>Today is... {{today | date('d/M/y')}}</p>
+
+        <h3>Default value</h3>
+        <p>Do you love {{ var|default('Didi')}}?</p>
+    {# Checks if tasks is not empty #}
+    <h3>If control to check if array is empty</h3>
+    {% if tasks %} 
+        <ul>
+        {% for task in tasks %}
+            <li>{{ task }}</li>
+        {% endfor %}
+        </ul>
+    {% endif %}
+
+        <h3>Task loop with else for an empty array</h3>
+        <ul>
+        {% for task in tasks %}
+            <li>{{ task }}</li>
+            {% else %}
+            <li>No task found</li>
+        {% endfor %}
+        </ul>
+
+        <h3>Loop with index</h3>
+        <p>
+        {% for i in 0..10 %}
+            * {{ i }} -- loop #{{ loop.index }}<br>
+        {% endfor %}
+        </p>
+
+        <h3>Loop with index0</h3>
+        <p>
+        {% for letter in 'a'..'z' %}
+            * {{ letter }} -- loop #{{ loop.index0 }}<br>
+        {% endfor %}
+        </p>
+
+        {# <h3>Loop parent</h3>
+        <p>
+    {% for i in 0..10 %}
+        {% for j in 0..5 %}
+        * {{ j }} -- #{{ loop.parent }}<br>
+        {% endfor %}
+    {% endfor %}
+        </p> #}
     </body>
 </html>
