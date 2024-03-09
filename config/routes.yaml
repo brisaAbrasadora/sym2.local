@@ -9,3 +9,9 @@ index:
 testing:
     path: /testing
     controller: App\Controller\DefaultController::index
+uno:
+    path: /uno
+    controller: App\Controller\DefaultController::index1
+dos:
+    path: /dos
+    controller: App\Controller\DefaultController::index2

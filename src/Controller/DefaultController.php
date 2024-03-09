@@ -24,4 +24,23 @@ class DefaultController extends AbstractController
             'today' => $today
         ]);
     }
+
+    public function index1()
+    {
+        return $this->render('prueba1.html.twig');
+    }
+
+    public function index2()
+    {
+        $nombre = 'Juan';
+        $saludo = 'Buenos dias a todos';
+        $nombres = ['Ana', 'Enrique', 'Laura', 'Pablo'];
+
+        return $this->render('prueba2.html.twig', [
+            'nombre' => $nombre,
+            'saludo' => $saludo,
+            'nombres' => $nombres,
+            'fecha' => new \DateTime()
+        ]);
+    }
 }
