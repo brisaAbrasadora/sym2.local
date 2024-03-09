@@ -3,15 +3,15 @@ controllers:
         path: ../src/Controller/
         namespace: App\Controller
     type: attribute
-index:
-    path: /
-    controller: App\Controller\ProyectoController::index
-testing:
-    path: /testing
-    controller: App\Controller\DefaultController::index
-uno:
-    path: /uno
-    controller: App\Controller\DefaultController::index1
-dos:
-    path: /dos
-    controller: App\Controller\DefaultController::index2
+# index:
+#     path: /
+#     controller: App\Controller\ProyectoController::index
+# testing:
+#     path: /testing
+#     controller: App\Controller\DefaultController::index
+# uno:
+#     path: /uno
+#     controller: App\Controller\DefaultController::index1
+# dos:
+#     path: /dos
+#     controller: App\Controller\DefaultController::index2

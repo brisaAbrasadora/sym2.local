@@ -9,6 +9,4 @@
 /vendor/
 ###< symfony/framework-bundle ###
 
-*.jpg
-*.png
-*jpeg
+.templates_test

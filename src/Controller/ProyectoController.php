@@ -1,10 +1,15 @@
 <?php
 namespace App\Controller;
 
+use App\IEntity\Asociado;
 use App\IEntity\Imagen;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Routing\Annotation\Route;
+
 
 class ProyectoController extends AbstractController {
+
+    #[Route('/', name: 'sym_index')]
     public function index()
     {
         $imagenesHome[] = new Imagen('1.jpg', 'descripción imagen 1', 1, 506, 610, 130);
@@ -20,8 +25,38 @@ class ProyectoController extends AbstractController {
         $imagenesHome[] = new Imagen('11.jpg', 'descripción imagen 11', 1, 456, 610, 130);
         $imagenesHome[] = new Imagen('12.jpg', 'descripción imagen 12', 1, 456, 610, 130);
 
-        return $this->render('imagenes.html.twig', [
-            'imagenes' => $imagenesHome
+        $logosAsociados[] = new Asociado('logo 1', 'log1.jpg', 'descripcion logo 1');
+        $logosAsociados[] = new Asociado('logo 2', 'log2.jpg', 'descripcion logo 2');
+        $logosAsociados[] = new Asociado('logo 3', 'log3.jpg', 'descripcion logo 3');
+
+        return $this->render('index.view.html.twig', [
+            'imagenes' => $imagenesHome,
+            'asociados' => $logosAsociados
         ]);
+    }
+
+    #[Route('/about', name: 'sym_about')]
+    public function about()
+    {
+        $imagenesClientes[] = new Imagen('client1.jpg', 'MISS BELLA');
+        $imagenesClientes[] = new Imagen('client2.jpg', 'DON PENO');
+        $imagenesClientes[] = new Imagen('client3.jpg', 'SWEETY');
+        $imagenesClientes[] = new Imagen('client4.jpg', 'LADY');
+
+        return $this->render('about.view.html.twig', [
+            'clientes' => $imagenesClientes
+        ]);
+    }
+
+    #[Route('/blog', name: 'sym_blog')]
+    public function blog()
+    {
+        return $this->render('blog.view.html.twig');
+    }
+
+    #[Route('/contact', name: 'sym_contact')]
+    public function contact()
+    {
+        return $this->render('contact.view.html.twig');
     }
 }
