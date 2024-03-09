@@ -5,4 +5,7 @@ controllers:
     type: attribute
 index:
     path: /
+    controller: App\Controller\ProyectoController::index
+testing:
+    path: /testing
     controller: App\Controller\DefaultController::index
