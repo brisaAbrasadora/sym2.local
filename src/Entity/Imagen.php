@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\ImagenRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ImagenRepository::class)]
 class Imagen
@@ -19,6 +20,11 @@ class Imagen
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    /**
+     * @Assert\File(
+     * mimeTypes={"image/jpeg","image/png"},
+     * mimeTypesMessage = "Solamente se permiten archivos jpeg o png.")
+     */
     private ?string $nombre = null;
 
     #[ORM\Column(length: 255, nullable: true)]
@@ -128,25 +134,26 @@ class Imagen
         return self::RUTA_IMAGENES_CLIENTES . $this->getNombre();
     }
 
-    public function getUrlImagenesSubidas() : string
+    public function getUrlImagenesSubidas(): string
     {
         return self::RUTA_IMAGENES_SUBIDAS . $this->getNombre();
     }
 
-    public function __toString():string
+    public function __toString(): string
     {
-        return $this->getDescripcion();        
+        return $this->getDescripcion();
     }
 
-    public function toArray(): array {
+    public function toArray(): array
+    {
         return [
-            'id'=>$this->getId(),
-            'nombre'=>$this->getNombre(),
-            'descripcion'=>$this->getDescripcion(),
-            'numVisualizaciones'=>$this->getNumVisualizaciones(),
-            'numLikes'=>$this->getNumDownloads(),
-            'numDownloads'=>$this->getNumDownloads(),
-            'categoria'=>$this->getCategoria()
+            'id' => $this->getId(),
+            'nombre' => $this->getNombre(),
+            'descripcion' => $this->getDescripcion(),
+            'numVisualizaciones' => $this->getNumVisualizaciones(),
+            'numLikes' => $this->getNumDownloads(),
+            'numDownloads' => $this->getNumDownloads(),
+            'categoria' => $this->getCategoria()
         ];
     }
 }
