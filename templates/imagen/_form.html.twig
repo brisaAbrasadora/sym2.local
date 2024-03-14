@@ -1,0 +1,12 @@
+{{ form_start(form) }}
+    {# {{ form_widget(form) }} #}
+    {{ form_row(form.nombre,{
+        'label':'Nombre',
+        'label_attr':{
+            'class':'etiqueta'
+        }
+        }) }}
+    {{ form_row(form.categoria,{'categoria':'Categoria'}) }}
+    {{ form_errors(form) }}
+    <button class="btn">{{ button_label|default('Save') }}</button>
+{{ form_end(form) }}

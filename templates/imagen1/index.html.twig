@@ -2,7 +2,7 @@
 
 {% block title %}
 	{{ parent() }}
-	| Image Index
+	| Galeria
 {% endblock %}
 
 {% block principal %}
@@ -26,15 +26,13 @@
 					<table class="table">
 						<thead>
 							<tr>
-								<th scope="col">Id</th>
+								<th scope="col">#</th>
 								<th scope="col">Nombre</th>
 								<th scope="col">Imagen</th>
-								<th scope="col">Descripcion</th>
+								<th scope="col">Visualizaciones</th>
+								<th scope="col">Likes</th>
+								<th scope="col">Descargas</th>
 								<th scope="col">Categoria</th>
-								<th scope="col">NumVisualizaciones</th>
-								<th scope="col">NumLikes</th>
-								<th scope="col">NumDownloads</th>
-								<th scope="col">Actions</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -48,19 +46,10 @@
 									<td>
 										<img src="{{ asset(imagen.getUrlImagenesSubidas() )}}" alt="{{ imagen.getDescripcion() }}" title="{{ imagen.getNombre() }}" width="100px">
 									</td>
-									<td>{{ imagen.getDescripcion() }}</td>
-									<td>{{ imagen.getCategoria() }}</td>
 									<td>{{ imagen.getNumVisualizaciones() }}</td>
 									<td>{{ imagen.getNumLikes() }}</td>
 									<td>{{ imagen.getNumDownloads() }}</td>
-									<td>
-										<a href="{{ path('app_imagen_show', {'id': imagen.getId() }) }}">Show</a>
-										<a href="{{ path('app_imagen_edit', {'id': imagen.getId() }) }}">Edit</a>
-									</td>
-								</tr>
-							{% else %}
-								<tr>
-									<td colspan="8">no records found</td>
+									<td>{{ imagen.getCategoria() }}</td>
 								</tr>
 							{% endfor %}
 						</tbody>
@@ -69,6 +58,4 @@
 			</div>
 		</div>
 	</div>
-
-	<a href="{{ path('app_imagen_new') }}">Create new</a>
 {% endblock %}
