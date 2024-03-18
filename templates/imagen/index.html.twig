@@ -56,6 +56,7 @@
 									<td>
 										<a href="{{ path('app_imagen_show', {'id': imagen.getId() }) }}">Show</a>
 										<a href="{{ path('app_imagen_edit', {'id': imagen.getId() }) }}">Edit</a>
+                                        <a href="{{ path('app_imagen_delete_json', {'id': imagen.id}) }}" class="delete">Delete</a>
 									</td>
 								</tr>
 							{% else %}
