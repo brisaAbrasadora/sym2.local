@@ -41,7 +41,9 @@ class ImagenController extends AbstractController
             $tipoOrdenacion = 'asc';
         }
 
-        $imagenes = $imagenRepository->findBy([], [$ordenacion=>$tipoOrdenacion]);
+        // $imagenes = $imagenRepository->findBy([], [$ordenacion=>$tipoOrdenacion]);
+        $imagenes = $imagenRepository->findImagenesConCategoria($ordenacion, $tipoOrdenacion);
+
         return $this->render('imagen/index.html.twig', [
             'imagenes' => $imagenes,
         ]);

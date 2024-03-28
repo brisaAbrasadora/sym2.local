@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\CategoriaRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: CategoriaRepository::class)]
@@ -16,8 +18,13 @@ class Categoria
     #[ORM\Column(length: 255)]
     private ?string $nombre = null;
 
-    #[ORM\Column]
-    private ?int $numImagenes = null;
+    #[ORM\OneToMany(targetEntity: Imagen::class, mappedBy: 'categoria')]
+    private Collection $imagens;
+
+    public function __construct()
+    {
+        $this->imagens = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -36,23 +43,38 @@ class Categoria
         return $this;
     }
 
-    public function getNumImagenes(): ?int
+    /**
+     * @return Collection<int, Imagen>
+     */
+    public function getImagens(): Collection
     {
-        return $this->numImagenes;
+        return $this->imagens;
     }
 
-    public function setNumImagenes(int $numImagenes): static
+    public function addImagen(Imagen $imagen): static
     {
-        $this->numImagenes = $numImagenes;
+        if (!$this->imagens->contains($imagen)) {
+            $this->imagens->add($imagen);
+            $imagen->setCategoria($this);
+        }
 
         return $this;
     }
 
-    public function toArray(): array {
-        return [
-            'id'=>$this->getId(),
-            'nombre'=>$this->getNombre(),
-            'numImagenes'=>$this->getNumImagenes(),
-        ];
+    public function removeImagen(Imagen $imagen): static
+    {
+        if ($this->imagens->removeElement($imagen)) {
+            // set the owning side to null (unless already changed)
+            if ($imagen->getCategoria() === $this) {
+                $imagen->setCategoria(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->nombre;
     }
 }

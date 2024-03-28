@@ -31,9 +31,6 @@ class Imagen
     private ?string $descripcion = null;
 
     #[ORM\Column]
-    private ?int $categoria = null;
-
-    #[ORM\Column]
     private ?int $numVisualizaciones = null;
 
     #[ORM\Column]
@@ -41,6 +38,10 @@ class Imagen
 
     #[ORM\Column]
     private ?int $numDownloads = null;
+
+    #[ORM\ManyToOne(inversedBy: 'imagens', targetEntity: Categoria::class)]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Categoria $categoria = null;
 
     public function getId(): ?int
     {
@@ -71,17 +72,6 @@ class Imagen
         return $this;
     }
 
-    public function getCategoria(): ?int
-    {
-        return $this->categoria;
-    }
-
-    public function setCategoria(int $categoria): static
-    {
-        $this->categoria = $categoria;
-
-        return $this;
-    }
 
     public function getNumVisualizaciones(): ?int
     {
@@ -155,5 +145,17 @@ class Imagen
             'numDownloads' => $this->getNumDownloads(),
             'categoria' => $this->getCategoria()
         ];
+    }
+
+    public function getCategoria(): ?Categoria
+    {
+        return $this->categoria;
+    }
+
+    public function setCategoria(?Categoria $categoria): static
+    {
+        $this->categoria = $categoria;
+
+        return $this;
     }
 }
