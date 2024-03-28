@@ -19,18 +19,23 @@
 			</div>
 		</div>
 	</div>
+    <form action="{{ path('app_imagen_index_busqueda') }}" method="post">
+        <label>Busqueda</label>
+        <input type="text" name="busqueda" id="busqueda" value="">
+        <input type="submit" value="Buscar">
+    </form>
 	<div id="galeria">
 		<div class="container">
-			<div class="col-xs-12 col-sm-8 col-sm-push-2">
+			<div class="col-xs-12 col-sm-12 ">
 				<div class="imagenes_galeria">
 					<table class="table">
 						<thead>
 							<tr>
-								<th scope="col">Id</th>
+								<th scope="col"><a href="{{ path('app_imagen_index_ordenado', {ordenacion: 'id'}) }}">Id</i></a></th>
 								<th scope="col">Nombre</th>
 								<th scope="col">Imagen</th>
-								<th scope="col">Descripcion</th>
-								<th scope="col">Categoria</th>
+								<th scope="col"><a href="{{ path('app_imagen_index_ordenado', {ordenacion: 'descripcion'}) }}">Descripcion</a></th>
+								<th scope="col"><a href="{{ path('app_imagen_index_ordenado', {ordenacion: 'categoria'}) }}">Categoria</a></th>
 								<th scope="col">NumVisualizaciones</th>
 								<th scope="col">NumLikes</th>
 								<th scope="col">NumDownloads</th>

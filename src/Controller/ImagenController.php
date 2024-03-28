@@ -16,10 +16,34 @@ use Symfony\Component\Routing\Attribute\Route;
 class ImagenController extends AbstractController
 {
     #[Route('/', name: 'app_imagen_index', methods: ['GET'])]
-    public function index(ImagenRepository $imagenRepository): Response
+    #[Route('/orden/{ordenacion}', name: 'app_imagen_index_ordenado', methods: ['GET'])]
+    public function index(Request $requestStack, ImagenRepository $imagenRepository, string $ordenacion = null): Response
     {
+        if(!is_null($ordenacion)) { // Cuando se establece un tipo de ordenacion especifico
+            $tipoOrdenacion = 'asc'; // Por defecto si no se habia guardado antes en la variable de sesion
+            $session = $requestStack->getSession(); // Se abre sesion
+            $imagenesOrdenacion = $session->get('imagenesOrdenacion');
+
+            if(!is_null($imagenesOrdenacion)) { // Comprobamos si ya se habia establecido un orden
+                if($imagenesOrdenacion['ordenacion'] === $ordenacion) { // Por si se ha cambiado de campo a ordenar
+                    if ($imagenesOrdenacion['tipoOrdenacion'] === 'asc') {
+                        $tipoOrdenacion = 'desc';
+                    }
+                }
+            }
+
+            $session->set('imagenesOrdenacion', [
+                'ordenacion' => $ordenacion,
+                'tipoOrdenacion' => $tipoOrdenacion
+            ]);
+        } else {
+            $ordenacion = 'id';
+            $tipoOrdenacion = 'asc';
+        }
+
+        $imagenes = $imagenRepository->findBy([], [$ordenacion=>$tipoOrdenacion]);
         return $this->render('imagen/index.html.twig', [
-            'imagenes' => $imagenRepository->findAll(),
+            'imagenes' => $imagenes,
         ]);
     }
 
@@ -53,6 +77,15 @@ class ImagenController extends AbstractController
         return $this->render('imagen/new.html.twig', [
             'imagen' => $imagen,
             'form' => $form,
+        ]);
+    }
+
+    #[Route('/busqueda', name: 'app_imagen_index_busqueda', methods: ['POST'])]
+    public function busqueda(Request $request, ImagenRepository $imagenRepository) : Response {
+        $busqueda = $request->request->get('busqueda');
+        $imagenes = $imagenRepository->findLikeDescription($busqueda);
+        return $this->render('imagen/index.html.twig', [
+            'imagenes' => $imagenes
         ]);
     }
 
