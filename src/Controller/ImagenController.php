@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\BLL\ImagenBLL;
 use App\Entity\Imagen;
 use App\Form\ImagenType;
 use App\Repository\ImagenRepository;
@@ -17,32 +18,13 @@ class ImagenController extends AbstractController
 {
     #[Route('/', name: 'app_imagen_index', methods: ['GET'])]
     #[Route('/orden/{ordenacion}', name: 'app_imagen_index_ordenado', methods: ['GET'])]
-    public function index(Request $requestStack, ImagenRepository $imagenRepository, string $ordenacion = null): Response
+    public function index(
+        Request $requestStack, 
+        ImagenBLL $imagenBLL,
+        ImagenRepository $imagenRepository, 
+        string $ordenacion = null): Response
     {
-        if(!is_null($ordenacion)) { // Cuando se establece un tipo de ordenacion especifico
-            $tipoOrdenacion = 'asc'; // Por defecto si no se habia guardado antes en la variable de sesion
-            $session = $requestStack->getSession(); // Se abre sesion
-            $imagenesOrdenacion = $session->get('imagenesOrdenacion');
-
-            if(!is_null($imagenesOrdenacion)) { // Comprobamos si ya se habia establecido un orden
-                if($imagenesOrdenacion['ordenacion'] === $ordenacion) { // Por si se ha cambiado de campo a ordenar
-                    if ($imagenesOrdenacion['tipoOrdenacion'] === 'asc') {
-                        $tipoOrdenacion = 'desc';
-                    }
-                }
-            }
-
-            $session->set('imagenesOrdenacion', [
-                'ordenacion' => $ordenacion,
-                'tipoOrdenacion' => $tipoOrdenacion
-            ]);
-        } else {
-            $ordenacion = 'id';
-            $tipoOrdenacion = 'asc';
-        }
-
-        // $imagenes = $imagenRepository->findBy([], [$ordenacion=>$tipoOrdenacion]);
-        $imagenes = $imagenRepository->findImagenesConCategoria($ordenacion, $tipoOrdenacion);
+        $imagenes = $imagenBLL->getImagenesConOrdenacion($ordenacion);
 
         return $this->render('imagen/index.html.twig', [
             'imagenes' => $imagenes,
