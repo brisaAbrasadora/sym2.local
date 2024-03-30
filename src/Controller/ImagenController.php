@@ -55,6 +55,8 @@ class ImagenController extends AbstractController
             $entityManager->persist($imagen);
             $entityManager->flush();
 
+            $this->addFlash('mensaje', 'Se ha creado la imagen ' . $imagen->getNombre());
+
             return $this->redirectToRoute('app_imagen_index', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -67,9 +69,14 @@ class ImagenController extends AbstractController
     #[Route('/busqueda', name: 'app_imagen_index_busqueda', methods: ['POST'])]
     public function busqueda(Request $request, ImagenRepository $imagenRepository) : Response {
         $busqueda = $request->request->get('busqueda');
-        $imagenes = $imagenRepository->findLikeDescription($busqueda);
+        $fechaInicial = $request->request->get('fechaInicial');
+        $fechaFinal = $request->request->get('fechaFinal');
+        $imagenes = $imagenRepository->findImagenes($busqueda, $fechaInicial, $fechaFinal);
         return $this->render('imagen/index.html.twig', [
-            'imagenes' => $imagenes
+            'imagenes' => $imagenes,
+            'busqueda' => $busqueda,
+            'fechaInicial' => $fechaInicial,
+            'fechaFinal' => $fechaFinal
         ]);
     }
 

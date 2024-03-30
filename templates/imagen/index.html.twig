@@ -21,9 +21,17 @@
 	</div>
     <form action="{{ path('app_imagen_index_busqueda') }}" method="post">
         <label>Busqueda</label>
-        <input type="text" name="busqueda" id="busqueda" value="">
+        <input type="text" name="busqueda" id="busqueda" value="{{ busqueda | default('') }}">
+        <input type="date" name="fechaInicial" id="fechaInicial" value="{{ fechaInicial | default('') }}">
+        <input type="date" name="fechaFinal" id="fechaFinal" value="{{ fechaFinal | default('') }}">
         <input type="submit" value="Buscar">
     </form>
+
+    {% for message in app.flashes('mensaje') %}
+        <div class="alert alert-primary" role="alert">
+            {{ message }}
+        </div>
+    {% endfor %}
 	<div id="galeria">
 		<div class="container">
 			<div class="col-xs-12 col-sm-12 ">
@@ -39,6 +47,7 @@
 								<th scope="col">NumVisualizaciones</th>
 								<th scope="col">NumLikes</th>
 								<th scope="col">NumDownloads</th>
+                                <th scope="col">Fecha de creacion</th>
 								<th scope="col">Actions</th>
 							</tr>
 						</thead>
@@ -58,6 +67,7 @@
 									<td>{{ imagen.getNumVisualizaciones() }}</td>
 									<td>{{ imagen.getNumLikes() }}</td>
 									<td>{{ imagen.getNumDownloads() }}</td>
+                                    <td>{{ imagen.fecha | date('d/m/Y') }}</td>
 									<td>
 										<a href="{{ path('app_imagen_show', {'id': imagen.getId() }) }}">Show</a>
 										<a href="{{ path('app_imagen_edit', {'id': imagen.getId() }) }}">Edit</a>
