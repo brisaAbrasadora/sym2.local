@@ -19,8 +19,13 @@ security:
             form_login:
                 login_path: app_login
                 check_path: app_login
+                enable_csrf: true
             logout:
                 path: app_logout
+            # configure the maxium login attempts
+            login_throttling:
+                max_attempts: 3    # por minuto
+                interval: '10 minutes' # tiempo de espera hasta poder volver a intentar acceder
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall
@@ -38,7 +43,7 @@ security:
         - { path: ^/imagen/edit, roles: ROLE_ADMIN }
         - { path: ^/imagen/delete, roles: ROLE_ADMIN }
         - { path: ^/imagen/busqueda, roles: ROLE_USER }
-        - { path: ^/register, roles: ROLE_ADMIN }
+        # - { path: ^/register, roles: PUBLIC_ACCESS }
         # allow unauthenticated users to access the login form
         - { path: ^/login, roles: PUBLIC_ACCESS }
         - { path: ^/galeria, roles: PUBLIC_ACCESS }
