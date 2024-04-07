@@ -39,14 +39,11 @@ security:
         # - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
         # Necesario ROLE_ADMIN el acceso a /imagen*
-        - { path: ^/imagen/new, roles: ROLE_ADMIN }
-        - { path: ^/imagen/edit, roles: ROLE_ADMIN }
-        - { path: ^/imagen/delete, roles: ROLE_ADMIN }
-        - { path: ^/imagen/busqueda, roles: ROLE_USER }
+        - { path: ^/imagen, roles: ROLE_USER }
         # - { path: ^/register, roles: PUBLIC_ACCESS }
         # allow unauthenticated users to access the login form
         - { path: ^/login, roles: PUBLIC_ACCESS }
-        - { path: ^/galeria, roles: PUBLIC_ACCESS }
+        - { path: ^/galeria, roles: ROLE_USER }
         - { path: ^/logout, roles: IS_AUTHENTICATED_FULLY }
 
 

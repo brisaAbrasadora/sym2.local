@@ -46,6 +46,7 @@
                 <a href="{{ path('sym_contact') }}"><i class="fa fa-phone-square sr-icons"></i> Contact</a>
                 </li>
 
+                {% if is_granted('IS_AUTHENTICATED') %}
                 {% if app.request.pathinfo == '/galeria' %}
                 <li class="active lien">
                 {% else %}
@@ -53,7 +54,6 @@
                 {% endif %}
                 <a href="{{ path('sym_galeria') }}"><i class="fa fa-photo sr-icons"></i> Galeria</a>
                 </li>
-                {% if is_granted('IS_AUTHENTICATED') %}
                 <li class="lien">
                     <a href={{ path('app_logout') }}><i class="fa fa-sign-out sr-icons"></i> Logout - {{ app.user.username }}</a>
                 </li>

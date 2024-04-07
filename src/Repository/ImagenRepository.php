@@ -3,8 +3,10 @@
 namespace App\Repository;
 
 use App\Entity\Imagen;
+use App\Entity\User;
 use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -60,7 +62,7 @@ class ImagenRepository extends ServiceEntityRepository
      * @return Imagen[]
      *      Returns an array of Imagen objects
      */
-    public function findImagenes(string $descripcion, string $fechaInicial, string $fechaFinal): array 
+    public function findImagenes(string $descripcion, string $fechaInicial, string $fechaFinal, User $usuario): array 
     {
         $qb = $this->createQueryBuilder('i');
 
@@ -87,10 +89,12 @@ class ImagenRepository extends ServiceEntityRepository
                 ->setParameter('fechaFinal', $dtFechaFinal);
         }
 
+        $this->addUserFilter($qb, $usuario);
+
         return $qb->getQuery()->getResult();
     }
 
-    public function findImagenesConCategoria(string $ordenacion, string $tipoOrdenacion)
+    public function findImagenesConCategoria(string $ordenacion, string $tipoOrdenacion, User $usuario)
     {
         $qb = $this->createQueryBuilder('imagen');
 
@@ -98,6 +102,16 @@ class ImagenRepository extends ServiceEntityRepository
             ->innerJoin('imagen.categoria', 'categoria')
             ->orderBy('imagen.' . $ordenacion, $tipoOrdenacion);
 
+        $this->addUserFilter($qb, $usuario);
+
         return $qb->getQuery()->getResult();
+    }
+
+    public function addUserFilter(QueryBuilder $qb, User $usuario) {
+        if(in_array('ROLE_ADMIN', $usuario->getRoles()) === false) {
+            $qb->innerJoin('imagen.usuario', 'usuario')
+                ->andWhere($qb->expr()->eq('imagen.usuario', ':usuario'))
+                ->setParameter('usuario', $usuario);
+        }
     }
 }
