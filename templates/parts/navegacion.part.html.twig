@@ -47,12 +47,12 @@
                 </li>
 
                 {% if is_granted('IS_AUTHENTICATED') %}
-                {% if app.request.pathinfo == '/galeria' %}
+                {% if app.request.pathinfo == '/imagen' %}
                 <li class="active lien">
                 {% else %}
                 <li class="lien">
                 {% endif %}
-                <a href="{{ path('sym_galeria') }}"><i class="fa fa-photo sr-icons"></i> Galeria</a>
+                <a href="{{ path('app_imagen_index') }}"><i class="fa fa-photo sr-icons"></i> Galeria</a>
                 </li>
                 <li class="lien">
                     <a href={{ path('app_logout') }}><i class="fa fa-sign-out sr-icons"></i> Logout - {{ app.user.username }}</a>
