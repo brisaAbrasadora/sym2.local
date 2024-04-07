@@ -10,6 +10,9 @@ security:
                 class: App\Entity\User
                 property: username
     firewalls:
+        api:
+            pattern: ^/api
+            stateless: true
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
@@ -45,6 +48,7 @@ security:
         # - { path: ^/login, roles: PUBLIC_ACCESS }
         # - { path: ^/galeria, roles: ROLE_USER }
         - { path: ^/logout, roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/api, roles: PUBLIC_ACCESS }
 
 
 when@test:

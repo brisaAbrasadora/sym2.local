@@ -2,23 +2,21 @@
 
 namespace App\BLL;
 
+use App\Entity\Categoria;
+use App\Entity\Imagen;
+use App\Entity\User;
 use Symfony\Component\HttpFoundation\RequestStack;
 use App\Repository\ImagenRepository;
+use DateTime;
 use Symfony\Bundle\SecurityBundle\Security;
 
-class ImagenBLL
+class ImagenBLL extends BaseBLL
 {
-    private RequestStack $requestStack;
-    private ImagenRepository $imagenRepository;
-    private Security $security;
-
-    public function __construct(
-        RequestStack $requestStack, 
-        ImagenRepository $imagenRepository,
-        Security $security)
-    {
+    public function setRequestStack(RequestStack $requestStack) {
         $this->requestStack = $requestStack;
-        $this->imagenRepository = $imagenRepository;
+    }
+
+    public function setSecurity(Security $security) {
         $this->security = $security;
     }
 
@@ -53,5 +51,44 @@ class ImagenBLL
             $tipoOrdenacion,
             $usuarioLogueado
         );
+    }
+
+    public function nueva(array $data)
+    {
+        $imagen = new Imagen();
+
+        $imagen->setNombre($data['nombre']);
+        $imagen->setDescripcion($data['descripcion']);
+        $imagen->setNumVisualizaciones($data['numVisualizaciones']);
+        $imagen->setNumLikes($data['numLikes']);
+        $imagen->setNumDownloads($data['numDownloads']);
+
+        //El ID de la categoria la tenemos que buscar en su BBDD
+        $categoria = $this->em->getRepository(Categoria::class)->find($data['categoria']);
+        $imagen->setCategoria($categoria);
+        $fecha = DateTime::createFromFormat('d/m/Y', $data['fecha']);
+        $imagen->setFecha($fecha);
+        $usuario = $this->em->getRepository(User::class)->find($data['usuario']);
+        $imagen->setUsuario($usuario);
+
+        return $this->guardaValidando($imagen);
+    }
+
+    public function toArray(Imagen $imagen)
+    {
+        if(is_null($imagen))
+            return null;
+
+        return [
+            'id' => $imagen->getId(),
+            'nombre' => $imagen->getNombre(),
+            'descripcion' => $imagen->getDescripcion(),
+            'categoria' => $imagen->getCategoria()->getNombre(),
+            'numLikes' => $imagen->getNumLikes(),
+            'numVisualizaciones' => $imagen->getNumVisualizaciones(),
+            'numDownloads' => $imagen->getNumDownloads(),
+            'fecha' => is_null($imagen->getFecha()) ? '' : $imagen->getFecha()->format('d/m/Y'),
+            'usuario' => $imagen->getUsuario()->getId()
+        ];
     }
 }

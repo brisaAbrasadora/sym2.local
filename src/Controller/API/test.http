@@ -1,0 +1,18 @@
+### Peticon GET
+GET http://sym2.local/api/prueba
+Content-Type: application/json
+
+### Send POST request with json bod
+POST http://sym2.local/api/imagenesapi
+Content-Type: application/json
+
+{
+    "nombre": "imagen post 1",
+    "descripcion": "esta es la imagen post 1",
+    "numVisualizaciones": "21",
+    "numLikes": "12",
+    "numDownloads": "4",
+    "categoria": "2",
+    "usuario": "3",
+    "fecha": "20/01/2024"
+}
